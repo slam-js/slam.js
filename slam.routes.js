@@ -3,24 +3,33 @@ console.log(querys);
 
 var page;
 
-if (querys[Object.keys(querys)[0]]!= "undefined") {
+if (querys[Object.keys(querys)[0]]== "undefined") {
   page="/";
 } else {
   page=Object.keys(querys)[0];
 }
 
-var routes = {}
+var routes = {};
 
+function loadPage(url) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange=function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.body.innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+}
 
 function routeAdd(route, pagelocation) {
-  routes[route]={"route":route, "pagelocation":pagelocation}
+  routes[route]={"route":route, "pagelocation":pagelocation};
 }
 
 function runRoutes() {
   for (i in routes) {
     if (routes[i].route==page) {
-    
-      console.log(routes[i].route);
+      loadPage(routes[i].pagelocation);
     }
   }
 }
